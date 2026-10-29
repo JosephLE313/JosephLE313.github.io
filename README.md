@@ -4,7 +4,7 @@ Sitio estático en español. HTML, CSS y JavaScript sin instalación ni compilac
 
 ## Ver y editar
 
-Abre `index.html` en un navegador. Edita el contenido en `index.html`, el diseño en `style.css` y la navegación en `script.js`. Las fuentes de Google requieren conexión; hay fuentes de respaldo.
+Abre `index.html` en un navegador. Edita el contenido en `index.html`, el diseño general en `style.css` y la portada en `home.css`. `script.js` gestiona la navegación y `home.js` la entrada animada y las iniciales de partículas. Las fuentes de Google requieren conexión; hay fuentes de respaldo.
 
 ## GitHub Desktop y GitHub Pages
 
@@ -16,4 +16,4 @@ Sitio público: https://josephle313.github.io/. GitHub Pages publica la rama `ma
 
 Nombre y título proporcionados por Joseph. Proyecto enlazado: `JosephLE313/Control_de_Obra_front`; TypeScript, React y Vite se verificaron en su repositorio. Las áreas de interés no representan acreditaciones. No se incluyeron correo, fotografía, métricas ni experiencia profesional sin confirmar.
 
-Estética inspirada en https://juan-coronado.github.io/: fondo oscuro, tonos pergamino, acentos burdeos y tipografía gótica. Código e ilustración estructural propios; no se reutilizaron fotografías ni textos personales de la referencia. Fuentes de Google Fonts: UnifrakturCook, Cormorant Garamond y Manrope.
+Estética inspirada en https://juan-coronado.github.io/: portada con textura de piedra propia, tonos pergamino, acentos burdeos, título gótico desgastado y entrada animada. Las iniciales de partículas sustituyen provisionalmente el retrato hasta disponer de una foto de Joseph. Código y recursos gráficos propios; no se reutilizaron fotografías ni textos personales de la referencia. Fuentes de Google Fonts: UnifrakturCook, Cormorant Garamond y Manrope.
