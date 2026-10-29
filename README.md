@@ -8,9 +8,9 @@ Abre `index.html` en un navegador. Edita el contenido en `index.html`, el diseñ
 
 ## GitHub Desktop y GitHub Pages
 
-Este directorio es un repositorio Git local. Para incorporarlo a GitHub Desktop: **File → Add local repository** y selecciona este directorio.
+Este repositorio ya está incorporado a GitHub Desktop y conectado a https://github.com/JosephLE313/JosephLE313.github.io.
 
-Para publicarlo con la dirección principal de la cuenta, crea el repositorio `JosephLE313.github.io` en GitHub y conecta el remoto. Sube la rama `main` y selecciona **Settings → Pages → Deploy from a branch → main → / (root)**. El sitio se sirve desde la raíz, sin compilar. El repositorio remoto y la publicación se configuran por separado.
+Sitio público: https://josephle313.github.io/. GitHub Pages publica la rama `main` desde `/ (root)`, sin compilar. Para actualizarlo, guarda los cambios, crea un commit y usa **Push origin** en GitHub Desktop. La publicación puede tardar unos minutos.
 
 ## Contenido y diseño
 
