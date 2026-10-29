@@ -1,0 +1,44 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const root = __dirname;
+const html = fs.readFileSync(path.join(root,'index.html'),'utf8');
+const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
+assert.equal(ids.length,new Set(ids).size,'Duplicate IDs');
+for (const [,href] of html.matchAll(/href="#([^"]+)"/g)) assert(ids.includes(href),`Missing anchor ${href}`);
+for (const [,url] of html.matchAll(/(?:src|href)="((?:assets\/|style\.css|script\.js)[^"]*)"/g)) assert(fs.existsSync(path.join(root,url.split(/[?#]/)[0])),`Missing file ${url}`);
+assert.equal((html.match(/<section class="chapter/g)||[]).length,8);
+assert.equal((html.match(/<details class="project-details"/g)||[]).length,6);
+assert(html.includes('INICIATIVA PROPUESTA'));
+assert(html.includes('assets/joseph-profesional.webp'));
+assert(!html.includes('home.js'));
+function setup({reduce=false,fine=true,clipboard=true}={}) {
+ const listeners={}, stageListeners={}, mediaListeners={}, callbacks=new Map();
+ let nextId=0, focused=false, draws=0, copied='';
+ const menu={open:true,querySelector:()=>({focus:()=>{focused=true;}})};
+ const progress={style:{}};
+ const status={textContent:''};
+ const sections=['inicio','sobre-mi','trayectoria'].map((id,i)=>({id,getBoundingClientRect:()=>({top:i*800-sandbox.scrollY})}));
+ const links=sections.map(section=>({hash:'#'+section.id,attrs:{},setAttribute(k,v){this.attrs[k]=v;},removeAttribute(k){delete this.attrs[k];}}));
+ const ctx={clearRect(){},setTransform(){},beginPath(){},arc(){draws++;},fill(){}};
+ const canvas={getContext:()=>ctx};
+ const stage={getBoundingClientRect:()=>({width:400,height:410,left:100,top:100}),addEventListener:(name,fn)=>{stageListeners[name]=fn;}};
+ const copy={addEventListener:(_,fn)=>{listeners.copy=fn;}};
+ const document={hidden:false,documentElement:{scrollHeight:2400},querySelector:s=>({'.menu':menu,'.scroll-progress span':progress,'#copy-email':copy,'#copy-status':status,'.portrait-stage':stage,'#portrait-particles':canvas})[s],querySelectorAll:s=>s==='.menu nav a'?[{addEventListener:(_,fn)=>{listeners.nav=fn;}}]:s==='main > section'?sections:s.includes('.chapter-nav')?links:[],addEventListener:(k,v)=>{listeners[k]=v;}};
+ const sandbox={document,navigator:clipboard?{clipboard:{writeText:async value=>{copied=value;}}}:{},window:{},innerHeight:800,scrollY:0,devicePixelRatio:1,matchMedia:q=>({matches:q.includes('reduced')?reduce:fine,addEventListener:(k,fn)=>{mediaListeners[q]=fn;}}),addEventListener:(k,v)=>{listeners[k]=v;},requestAnimationFrame:fn=>{callbacks.set(++nextId,fn);return nextId;},cancelAnimationFrame:id=>callbacks.delete(id),performance:{now:()=>0},console};
+ const context=vm.createContext(sandbox);
+ vm.runInContext(fs.readFileSync(path.join(root,'script.js'),'utf8'),context);
+ return {context,listeners,stageListeners,menu,progress,links,status,callbacks,stats:()=>({focused,draws,copied})};
+}
+(async()=>{
+ const t=setup(); t.listeners.nav();assert.equal(t.menu.open,false);
+ t.menu.open=true;t.listeners.keydown({key:'Escape'});assert(t.stats().focused);assert.equal(t.menu.open,false);
+ t.context.scrollY=900;vm.runInContext('updateScroll()',t.context);assert.equal(t.links[1].attrs['aria-current'],'location');assert.equal(t.progress.style.transform,'scaleX(0.5625)');
+ await t.listeners.copy();assert.equal(t.stats().copied,'joseph200345@gmail.com');assert.equal(t.status.textContent,'Correo copiado.');
+ const fallback=setup({clipboard:false});await fallback.listeners.copy();assert(fallback.status.textContent.includes('manualmente'));
+ t.stageListeners.pointerenter();t.stageListeners.pointermove({clientX:300,clientY:300});vm.runInContext('paintParticles(16)',t.context);assert(t.stats().draws>0);assert(vm.runInContext('points.some(p=>p.x!==p.homeX || p.y!==p.homeY)',t.context));
+ t.stageListeners.pointerleave();vm.runInContext('paintParticles(3000)',t.context);vm.runInContext('stopParticles()',t.context);assert.equal(vm.runInContext('frame',t.context),0);
+ for(const settings of [{reduce:true},{fine:false}]){const s=setup(settings);s.stageListeners.pointerenter();assert.equal(s.callbacks.size,0);}
+ console.log('PASS: 8 sections, 6 project disclosures, assets, anchors, menu, Escape, active section, progress, clipboard/fallback, particle repulsion and reduced-motion/touch guards.');
+})().catch(e=>{console.error(e);process.exitCode=1;});
