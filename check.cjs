@@ -7,10 +7,13 @@ const html = fs.readFileSync(path.join(root,'index.html'),'utf8');
 const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 assert.equal(ids.length,new Set(ids).size,'Duplicate IDs');
 for (const [,href] of html.matchAll(/href="#([^"]+)"/g)) assert(ids.includes(href),`Missing anchor ${href}`);
-for (const [,url] of html.matchAll(/(?:src|href)="((?:assets\/|style\.css|script\.js)[^"]*)"/g)) assert(fs.existsSync(path.join(root,url.split(/[?#]/)[0])),`Missing file ${url}`);
-assert.equal((html.match(/<section class="chapter/g)||[]).length,8);
-assert.equal((html.match(/<details class="project-details"/g)||[]).length,6);
-assert(html.includes('INICIATIVA PROPUESTA'));
+for (const [,url] of html.matchAll(/(?:src|href|poster)="((?:assets\/|(?:style|projects)\.css|script\.js)[^"]*)"/g)) assert(fs.existsSync(path.join(root,url.split(/[?#]/)[0])),`Missing file ${url}`);
+assert.equal((html.match(/<section class="chapter/g)||[]).length,14);
+assert.equal((html.match(/class="earned-skills"/g)||[]).length,6);
+assert(!html.includes('Consultar portafolio documental'));
+assert(!html.includes('class="project-grid"'));
+assert(!html.includes('autoplay'));
+assert(!html.includes('.rvt'));
 assert(html.includes('assets/joseph-profesional.webp'));
 assert(!html.includes('home.js'));
 function setup({reduce=false,fine=true,clipboard=true}={}) {
@@ -25,11 +28,16 @@ function setup({reduce=false,fine=true,clipboard=true}={}) {
  const canvas={getContext:()=>ctx};
  const stage={getBoundingClientRect:()=>({width:400,height:410,left:100,top:100}),addEventListener:(name,fn)=>{stageListeners[name]=fn;}};
  const copy={addEventListener:(_,fn)=>{listeners.copy=fn;}};
- const document={hidden:false,documentElement:{scrollHeight:2400},querySelector:s=>({'.menu':menu,'.scroll-progress span':progress,'#copy-email':copy,'#copy-status':status,'.portrait-stage':stage,'#portrait-particles':canvas})[s],querySelectorAll:s=>s==='.menu nav a'?[{addEventListener:(_,fn)=>{listeners.nav=fn;}}]:s==='main > section'?sections:s.includes('.chapter-nav')?links:[],addEventListener:(k,v)=>{listeners[k]=v;}};
+ const viewer={open:false,showModal(){this.open=true;},close(){this.open=false;},addEventListener:(k,fn)=>{listeners['viewer-'+k]=fn;}};
+ const viewerImage={style:{},removeAttribute(k){delete this[k];}};
+ const zoom={value:100,addEventListener:(_,fn)=>{listeners.zoom=fn;}};
+ const caption={},output={},original={},scroller={scrollTo(){}};
+ const imageLink={href:'https://example.test/plan.webp',querySelector:()=>({alt:'Plano de prueba'}),addEventListener:(_,fn)=>{listeners.image=fn;}};
+ const document={hidden:false,documentElement:{scrollHeight:2400},querySelector:s=>({'.menu':menu,'.scroll-progress span':progress,'#copy-email':copy,'#copy-status':status,'.portrait-stage':stage,'#portrait-particles':canvas,'#image-viewer':viewer,'#viewer-image':viewerImage,'#image-zoom':zoom,'#viewer-caption':caption,'#zoom-value':output,'#viewer-original':original,'.viewer-scroll':scroller})[s],querySelectorAll:s=>s==='.menu nav a'?[{addEventListener:(_,fn)=>{listeners.nav=fn;}}]:s==='main > section'?sections:s.includes('.chapter-nav')?links:s==='.zoom-image'?[imageLink]:[],addEventListener:(k,v)=>{listeners[k]=v;}};
  const sandbox={document,navigator:clipboard?{clipboard:{writeText:async value=>{copied=value;}}}:{},window:{},innerHeight:800,scrollY:0,devicePixelRatio:1,matchMedia:q=>({matches:q.includes('reduced')?reduce:fine,addEventListener:(k,fn)=>{mediaListeners[q]=fn;}}),addEventListener:(k,v)=>{listeners[k]=v;},requestAnimationFrame:fn=>{callbacks.set(++nextId,fn);return nextId;},cancelAnimationFrame:id=>callbacks.delete(id),performance:{now:()=>0},console};
  const context=vm.createContext(sandbox);
  vm.runInContext(fs.readFileSync(path.join(root,'script.js'),'utf8'),context);
- return {context,listeners,stageListeners,menu,progress,links,status,callbacks,stats:()=>({focused,draws,copied})};
+ return {context,listeners,stageListeners,menu,progress,links,status,callbacks,viewer,viewerImage,zoom,caption,output,stats:()=>({focused,draws,copied})};
 }
 (async()=>{
  const t=setup(); t.listeners.nav();assert.equal(t.menu.open,false);
@@ -40,5 +48,9 @@ function setup({reduce=false,fine=true,clipboard=true}={}) {
  t.stageListeners.pointerenter();t.stageListeners.pointermove({clientX:300,clientY:300});vm.runInContext('paintParticles(16)',t.context);assert(t.stats().draws>0);assert(vm.runInContext('points.some(p=>p.x!==p.homeX || p.y!==p.homeY)',t.context));
  t.stageListeners.pointerleave();vm.runInContext('paintParticles(3000)',t.context);vm.runInContext('stopParticles()',t.context);assert.equal(vm.runInContext('frame',t.context),0);
  for(const settings of [{reduce:true},{fine:false}]){const s=setup(settings);s.stageListeners.pointerenter();assert.equal(s.callbacks.size,0);}
- console.log('PASS: 8 sections, 6 project disclosures, assets, anchors, menu, Escape, active section, progress, clipboard/fallback, particle repulsion and reduced-motion/touch guards.');
+ let prevented=false;t.listeners.image({ctrlKey:true,preventDefault(){prevented=true;}});assert.equal(t.viewer.open,false);assert.equal(prevented,false);
+ t.listeners.image({preventDefault(){prevented=true;}});assert(prevented);assert(t.viewer.open);assert.equal(t.caption.textContent,'Plano de prueba');assert.equal(t.zoom.value,100);
+ t.zoom.value=250;t.listeners.zoom();assert.equal(t.viewerImage.style.width,'250%');assert.equal(t.output.textContent,'250 %');
+ t.listeners['viewer-click']({target:t.viewer});assert.equal(t.viewer.open,false);t.listeners['viewer-close']();assert.equal(t.viewerImage.src,undefined);
+ console.log('PASS: 14 sections, 6 role/skills narratives, linked assets, anchors, navigation, clipboard, portrait accessibility, image dialog, zoom and modified-click fallback.');
 })().catch(e=>{console.error(e);process.exitCode=1;});

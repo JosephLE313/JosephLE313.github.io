@@ -6,13 +6,14 @@ document.addEventListener('keydown', event => {
 const chapters = [...document.querySelectorAll('main > section')];
 const chapterLinks = [...document.querySelectorAll('.chapter-nav a, .desktop-nav a')];
 const progress = document.querySelector('.scroll-progress span');
+const chapterGroups = {vivienda:'proyectos',concreto:'investigacion','control-obra':'nexo-sismico',monitoreo:'investigacion',objetivos:'tecnologias'};
 let scheduled = false;
 function updateScroll() {
   const max = document.documentElement.scrollHeight - innerHeight;
   progress.style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0})`;
   const active = chapters.reduce((selected, section) => section.getBoundingClientRect().top <= innerHeight * .4 ? section : selected, chapters[0]);
   chapterLinks.forEach(link => {
-    if (link.hash === `#${active.id}`) link.setAttribute('aria-current', 'location');
+    if (link.hash === `#${chapterGroups[active.id] || active.id}`) link.setAttribute('aria-current', 'location');
     else link.removeAttribute('aria-current');
   });
   scheduled = false;
@@ -98,3 +99,31 @@ document.addEventListener('visibilitychange', stopParticles);
 if ('ResizeObserver' in window) new ResizeObserver(resizeParticles).observe(stage);
 else addEventListener('resize', resizeParticles);
 resizeParticles();
+
+// Native dialog keeps keyboard focus inside and restores it on close.
+const viewer = document.querySelector('#image-viewer');
+const viewerImage = document.querySelector('#viewer-image');
+const imageZoom = document.querySelector('#image-zoom');
+function resetImageZoom() {
+  imageZoom.value = 100;
+  viewerImage.style.width = '100%';
+  document.querySelector('#zoom-value').textContent = '100 %';
+}
+document.querySelectorAll('.zoom-image').forEach(link => link.addEventListener('click', event => {
+  if (!viewer.showModal || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  const original = link.querySelector('img');
+  viewerImage.src = link.href;
+  viewerImage.alt = original.alt;
+  document.querySelector('#viewer-caption').textContent = original.alt;
+  document.querySelector('#viewer-original').href = link.href;
+  resetImageZoom();
+  viewer.showModal();
+  document.querySelector('.viewer-scroll').scrollTo(0, 0);
+}));
+imageZoom.addEventListener('input', () => {
+  viewerImage.style.width = `${imageZoom.value}%`;
+  document.querySelector('#zoom-value').textContent = `${imageZoom.value} %`;
+});
+viewer.addEventListener('click', event => { if (event.target === viewer) viewer.close(); });
+viewer.addEventListener('close', () => { viewerImage.removeAttribute('src'); });

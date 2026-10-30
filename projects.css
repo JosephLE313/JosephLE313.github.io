@@ -1,0 +1,71 @@
+/* Project narratives reuse the portfolio's typography and colours. */
+html{scroll-snap-type:none}
+.case-study{padding-top:110px;padding-bottom:100px}
+.case-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(35px,5vw,80px);align-items:start}
+.case-copy h2{font-size:clamp(39px,3.8vw,57px);line-height:1.07;margin:18px 0 28px}
+.project-meta{font-size:9px;font-weight:600;letter-spacing:1.3px;line-height:1.8;color:var(--accent);margin-bottom:12px}
+.project-description{font-size:14px;line-height:1.95}
+.mission{border-left:2px solid var(--accent);padding:5px 0 5px 20px;margin:30px 0}
+.mission>span{font-size:8px;letter-spacing:2px;color:var(--accent)}
+.mission>p{font:400 24px/1.35 var(--serif);color:var(--text);margin:10px 0 0}
+.role-title{font-size:14px;margin:30px 0 15px}
+.role-list{list-style:none;padding:0;margin:0;counter-reset:roles}
+.role-list li{position:relative;padding:0 0 15px 27px;color:var(--muted);font-size:12px;line-height:1.85;counter-increment:roles}
+.role-list li:before{content:counter(roles,decimal-leading-zero);position:absolute;left:0;top:3px;font-size:8px;color:var(--accent)}
+.earned-skills{position:relative;margin-top:30px;padding:27px;border:1px solid #9ce2cc45;background:linear-gradient(125deg,#9ce2cc11,transparent 80%)}
+.earned-skills:before{content:'';position:absolute;top:-1px;left:26px;width:48px;height:2px;background:var(--accent)}
+.earned-skills .eyebrow{font-size:7px;letter-spacing:1.8px;margin-bottom:10px}
+.earned-skills h4{font:400 28px/1.1 var(--serif);color:var(--text);margin:0 0 21px}
+.earned-skills ul{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.earned-skills li{font-size:10px;line-height:1.5;color:#d6eee5;border:1px solid #9ce2cc28;padding:7px 10px;background:#09151f80}
+.case-media{display:grid;gap:24px;min-width:0;align-content:start;padding-top:5px}
+.media-heading{border-top:1px solid var(--line);padding:22px 0 0}
+.media-heading>span{font-size:8px;letter-spacing:1.7px;color:var(--accent)}
+.media-heading>p{font:28px/1.2 var(--serif);color:var(--text);margin:12px 0 0}
+.delivery-flow{list-style:none;padding:0;margin:0}
+.delivery-flow li{display:flex;gap:24px;padding:25px 0;border-bottom:1px solid var(--line)}
+.delivery-flow li>span{font-size:9px;color:var(--accent);padding-top:5px}
+.delivery-flow h3{font:27px/1.2 var(--serif);margin-bottom:8px}
+.delivery-flow p{font-size:11px;margin-bottom:0}
+.project-figure,.project-video{margin:0;min-width:0}
+.zoom-image{position:relative;display:block;border:1px solid var(--line);overflow:hidden;background:#0e1d28}
+.zoom-image img{width:100%;height:auto;max-height:570px;object-fit:contain;transition:opacity .2s}
+.zoom-image:hover img{opacity:.85}
+.portrait-stage .zoom-image{border:0;background:transparent}
+.portrait-stage .zoom-image:hover img{opacity:1}
+.field-figure>.zoom-image img{aspect-ratio:1.25;object-fit:cover;object-position:48% 50%}
+.lab-figure>.zoom-image img{aspect-ratio:1.1;object-fit:cover}
+.zoom-image>span{position:absolute;right:10px;bottom:10px;font-size:9px;padding:7px 10px;background:#09151fed;color:var(--accent);border:1px solid #9ce2cc40}
+.project-figure figcaption,.project-video figcaption{font-size:10px;line-height:1.6;margin-top:10px}
+.project-figure figcaption a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.plan-figure .zoom-image{background:#fff}
+.plan-figure img{aspect-ratio:1.4;object-fit:contain}
+.media-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.media-pair .zoom-image img{height:230px;object-fit:contain}
+.project-video video{display:block;width:100%;aspect-ratio:16/9;background:#080f17;border:1px solid var(--line)}
+.video-description{font-size:11px;border-bottom:1px solid var(--line);padding-bottom:20px}
+.video-description summary{cursor:pointer;color:var(--accent)}
+.video-description p{margin:14px 0 0}
+.project-scope,.media-pending{font-size:11px;line-height:1.9;margin-top:24px;color:#aebec6}
+.values{padding-top:28px;margin-top:26px;border-top:1px solid var(--line)}
+.values h3{font-size:13px;color:var(--accent)}
+.values>p{font-size:12px}
+.values blockquote{font-size:28px;margin-bottom:0}
+.visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:35px}
+.visit-grid article{border-top:1px solid var(--line);padding-top:20px}
+.visit-grid h3{font:32px/1.2 var(--serif);margin:26px 0 12px}
+.visit-grid article>p:not(.project-meta){font-size:13px;line-height:1.9}
+.visit-grid img{aspect-ratio:1.6;object-fit:cover}
+#image-viewer{width:min(1200px,95vw);max-width:95vw;max-height:94svh;padding:0;border:1px solid #9ce2cc70;background:#0b1822;color:var(--text)}
+#image-viewer::backdrop{background:#020a10e8;backdrop-filter:blur(6px)}
+.viewer-toolbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.viewer-toolbar p{font-size:12px;margin:0;color:var(--text)}
+.viewer-toolbar form{margin:0}
+.viewer-toolbar button{padding:9px 13px;white-space:nowrap;background:var(--accent);color:#09151f;border:0;cursor:pointer;font:600 11px var(--sans)}
+.viewer-controls{display:flex;align-items:center;gap:14px;padding:14px 22px;font-size:11px}
+.viewer-controls input{max-width:150px;accent-color:var(--accent)}
+.viewer-controls a{margin-left:auto;color:var(--accent)}
+.viewer-scroll{max-height:72svh;overflow:auto;background:#17232c}
+#viewer-image{display:block;width:100%;max-width:none;height:auto}
+@media(min-width:1100px){.case-study .case-media{position:sticky;top:110px;max-height:calc(100svh - 145px);overflow:auto;scrollbar-width:thin;scrollbar-color:#56756c transparent;padding-right:7px}}
+@media(max-width:760px){.case-study{padding-top:88px;padding-bottom:70px}.case-layout{grid-template-columns:1fr;gap:35px}.case-copy h2{font-size:42px}.case-study .eyebrow{font-size:8px;letter-spacing:1.6px}.earned-skills{padding:23px}.earned-skills li{font-size:10px}.project-description{font-size:13px}.role-list li{font-size:12px}.visit-grid{grid-template-columns:1fr;gap:30px}.viewer-toolbar{padding:14px}.viewer-toolbar p{font-size:10px}.viewer-controls{padding:12px;gap:8px;flex-wrap:wrap}.viewer-controls input{max-width:100px}.viewer-controls a{font-size:10px}.media-pair .zoom-image img{height:190px}}
