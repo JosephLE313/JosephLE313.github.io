@@ -38,7 +38,7 @@ loadModel.addEventListener('click', async () => {
     model.hidden = false;
     model.setAttribute('aria-busy', 'true');
     model.removeAttribute('src');
-    model.src = 'assets/rosa-america.glb';
+    model.src = 'assets/rosa-america-v2.glb';
   } catch { modelFailure(); }
 });
 document.querySelector('#reset-model').addEventListener('click', () => {

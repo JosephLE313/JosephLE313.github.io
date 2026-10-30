@@ -55,7 +55,9 @@ El sitio utiliza copias de visualización sin ejecutar código dentro de Revit n
 
 Posteriormente Joseph proporcionó una exportación OBJ del CETPRO, acompañada por su MTL disponible en el mismo directorio. Esta vía no requiere Python dentro de Revit ni Blender. El archivo original de 1.811.829.592 bytes permanece fuera del repositorio y sin modificaciones.
 
-La copia web `assets/rosa-america.glb` contiene geometría simplificada para visualización, 93 materiales base y compresión Draco: 20.552.456 bytes. Se redujeron 13.643.289 triángulos a 1.869.472, conservando las dimensiones exteriores aproximadas del conjunto de 73,55 × 76,15 × 13,25 m. No se incorporaron texturas, rutas locales, parámetros BIM ni los nombres de objetos del OBJ. La copia no sustituye al modelo técnico original.
+La copia web `assets/rosa-america-v2.glb` contiene 93 materiales base y compresión Draco: 37.864.016 bytes. De los 13.643.289 triángulos originales se conservan 4.826.474 en la copia. Muros, puertas, ventanas, estructura y piezas no clasificadas conservan su geometría original; la simplificación se limita al mobiliario identificado y protege sus bordes. Se mantienen las dimensiones exteriores aproximadas del conjunto de 73,55 × 76,15 × 13,25 m. No se incorporan texturas, rutas locales, parámetros BIM ni nombres de objetos del OBJ. La copia no sustituye al modelo técnico original.
+
+La comprobación de conversión compara los triángulos de 4.318 piezas protegidas (3.332.254 triángulos) antes y después del procesamiento, con hashes idénticos. `assets/rosa-america-validation.json` vincula esa comprobación al SHA-256 del GLB publicado; `model-check.cjs` verifica ambos. El visor usa un nombre de archivo nuevo para evitar servir la versión anterior desde la caché.
 
 `model.js` carga Google model-viewer 4.4.0 y la geometría únicamente al pulsar el botón. El visor ofrece cámara con ratón, tacto o flechas, restablecimiento y pantalla completa cuando el navegador la permite. El estado informa carga y fallos; los planos siguen accesibles. La imagen previa procede de una captura del modelo real.
 

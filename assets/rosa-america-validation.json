@@ -1,0 +1,10 @@
+{
+  "source_triangles": 13643289,
+  "output_triangles": 4826474,
+  "protected_parts": 4318,
+  "protected_triangles": 3332254,
+  "protected_source_sha256": "03b6e5b73f328cad43950d937ec02003485ab6db07165d7187e13d4e3037d444",
+  "protected_output_sha256": "03b6e5b73f328cad43950d937ec02003485ab6db07165d7187e13d4e3037d444",
+  "model_sha256": "375f1bb8b95fe6dc4f42cc23d539ea8a0f952b3b5217a8dfc52560bd3e54b7ab",
+  "model_bytes": 37864016
+}
