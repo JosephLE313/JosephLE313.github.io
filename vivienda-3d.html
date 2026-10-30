@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vivienda multifamiliar · Modelo 3D</title>
+  <style>
+    html,body{margin:0;height:100%;background:#14232d}
+    model-viewer{display:block;width:100%;height:100%}
+  </style>
+</head>
+<body>
+  <model-viewer id="modelo"
+    alt="Modelo estructural de vivienda multifamiliar"
+    camera-controls touch-action="pan-y"
+    camera-orbit="35deg 65deg 100%">
+  </model-viewer>
+
+  <script type="module">
+    import {ModelViewerElement} from './assets/vendor/model-viewer.min.js';
+    ModelViewerElement.dracoDecoderLocation =
+      new URL('./assets/vendor/draco/', location.href).href;
+    document.querySelector('#modelo').src = './assets/vivienda.glb';
+  </script>
+</body>
+</html>
