@@ -9,6 +9,8 @@ Abre `index.html` directamente o sirve este directorio con cualquier servidor es
 
 Con Node.js: `node --check script.js` y `node check.cjs`. La comprobación cubre recursos y enlaces internos, catorce secciones, seis proyectos con funciones y habilidades, menú, Escape, sección activa, progreso, copia de correo, partículas y ampliación de imágenes con zoom.
 
+Para el visor 3D: `node --check model.js` y `node model-check.cjs`. Se comprueban el GLB, sus materiales, el decodificador local, la carga bajo demanda, errores, restablecimiento de cámara y pantalla completa.
+
 ## Publicar
 
 El repositorio está conectado a GitHub Desktop. Guarda los cambios, crea un commit y usa **Push origin**. GitHub Pages publica `main` desde la raíz del repositorio. Espera a que termine el despliegue. Los parámetros de versión de CSS y JS evitan conservar la versión anterior tras este rediseño.
@@ -35,7 +37,7 @@ No se afirman porcentajes de mejora, precisión, carga máxima, premios ni ahorr
 
 ## Recursos que faltan para ampliar el contenido
 
-- Exportaciones GLB/IFC de los dos modelos Revit para completar la visualización 3D; los archivos RVT originales se conservan fuera del repositorio.
+- Exportación de la vivienda multifamiliar para completar su visualización 3D; sus archivos RVT originales se conservan fuera del repositorio. El modelo de Rosa América ya está incorporado.
 - Planos de vigas, losas y columnas de la vivienda en un formato publicable.
 - Nueva fotografía para la sección de trayectoria, anunciada por Joseph y todavía no recibida.
 - Resultados y reportes experimentales que se autoricen publicar.
@@ -47,4 +49,16 @@ No hay dependencias de servicios para los enlaces internos o los PDF. LinkedIn y
 
 Pasaron sintaxis, `node check.cjs` y solicitudes HTTP de los 22 recursos enlazados. Se comprobó el diseño en el navegador de escritorio y a 390 px: sin desbordamiento horizontal; menú móvil, ampliación de un plano, zoom al 300 %, cierre con Escape y restauración del foco. El video cargó y reprodujo correctamente (109,79 s, estado readyState 4); se comprobó reproducción/pausa con teclado, sin errores de consola. Utiliza carga diferida hasta la interacción.
 
-La conversión de modelos no se ejecutó: Revit devolvió el consentimiento de Python como rechazado o cancelado. Python permanece desactivado; no se guardaron cambios en los RVT. La interfaz no simula que los modelos sean interactivos.
+El sitio utiliza copias de visualización sin ejecutar código dentro de Revit ni modificar los archivos RVT originales. El modelo interactivo de Rosa América está disponible; el de la vivienda permanece pendiente.
+
+## Modelo interactivo de Rosa América
+
+Posteriormente Joseph proporcionó una exportación OBJ del CETPRO, acompañada por su MTL disponible en el mismo directorio. Esta vía no requiere Python dentro de Revit ni Blender. El archivo original de 1.811.829.592 bytes permanece fuera del repositorio y sin modificaciones.
+
+La copia web `assets/rosa-america.glb` contiene geometría simplificada para visualización, 93 materiales base y compresión Draco: 20.552.456 bytes. Se redujeron 13.643.289 triángulos a 1.869.472, conservando las dimensiones exteriores aproximadas del conjunto de 73,55 × 76,15 × 13,25 m. No se incorporaron texturas, rutas locales, parámetros BIM ni los nombres de objetos del OBJ. La copia no sustituye al modelo técnico original.
+
+`model.js` carga Google model-viewer 4.4.0 y la geometría únicamente al pulsar el botón. El visor ofrece cámara con ratón, tacto o flechas, restablecimiento y pantalla completa cuando el navegador la permite. El estado informa carga y fallos; los planos siguen accesibles. La imagen previa procede de una captura del modelo real.
+
+El visor y el decodificador Draco 1.5.7 se sirven desde `assets/vendor/`, con sus licencias Apache-2.0. Los programas de conversión se mantienen en el directorio de trabajo y no forman parte del sitio.
+
+Validación: carga real en navegador de escritorio y a 390 px; giro con flechas, zoom con rueda, restablecimiento y entrada a pantalla completa. La biblioteca y el GLB no se cargan antes del clic. Sin desbordamiento horizontal ni errores de consola en estas pruebas. Controles móviles de 44 px. Pasan `node check.cjs`, `node model-check.cjs` y las solicitudes HTTP de los 28 recursos del sitio y del visor.
