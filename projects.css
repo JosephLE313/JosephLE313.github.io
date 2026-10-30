@@ -28,6 +28,9 @@ html{scroll-snap-type:none}
 .delivery-flow h3{font:27px/1.2 var(--serif);margin-bottom:8px}
 .delivery-flow p{font-size:11px;margin-bottom:0}
 .project-figure,.project-video{margin:0;min-width:0}
+.housing-viewer{display:block;width:100%;height:460px;border:1px solid #9ce2cc50;background:#14232d}
+.documentation-caption{font-size:11px;line-height:1.8;margin:0;color:var(--muted)}
+@media(max-width:760px){.housing-viewer{height:420px}}
 .model-figure{margin:0;min-width:0}
 .model-stage{position:relative;aspect-ratio:1.18;background:#14232d;border:1px solid #9ce2cc50;overflow:hidden}
 .model-stage [hidden]{display:none!important}

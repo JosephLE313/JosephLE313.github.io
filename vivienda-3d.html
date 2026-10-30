@@ -5,22 +5,54 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Vivienda multifamiliar · Modelo 3D</title>
   <style>
-    html,body{margin:0;height:100%;background:#14232d}
+    html,body{margin:0;height:100%;background:#14232d;color:#d6eee5;font:12px system-ui,sans-serif;overflow:hidden}
     model-viewer{display:block;width:100%;height:100%}
+    #housing-status{position:absolute;left:14px;right:14px;bottom:62px;margin:0;font-size:10px;pointer-events:none;text-shadow:0 1px 3px #09151f}
+    .tools{position:absolute;left:12px;right:12px;bottom:12px;display:flex;justify-content:space-between;gap:10px;pointer-events:none}
+    button{pointer-events:auto;min-height:40px;padding:8px 10px;border:1px solid #9ce2cc50;background:#09151fed;color:#9ce2cc;font:11px system-ui,sans-serif;cursor:pointer}
+    @media(max-width:760px){button{min-height:44px}}
   </style>
 </head>
 <body>
   <model-viewer id="modelo"
     alt="Modelo estructural de vivienda multifamiliar"
     camera-controls touch-action="pan-y"
-    camera-orbit="35deg 65deg 100%">
+    camera-orbit="35deg 65deg 100%" interaction-prompt="none" aria-describedby="housing-status">
   </model-viewer>
 
+  <p id="housing-status" role="status" aria-live="polite">Preparando modelo 3D…</p>
+  <div class="tools"><button id="reset" type="button">Restablecer vista</button><button id="expand" type="button">Pantalla completa</button></div>
   <script type="module">
-    import {ModelViewerElement} from './assets/vendor/model-viewer.min.js';
-    ModelViewerElement.dracoDecoderLocation =
-      new URL('./assets/vendor/draco/', location.href).href;
-    document.querySelector('#modelo').src = './assets/vivienda.glb';
+    const model = document.querySelector('#modelo');
+    const status = document.querySelector('#housing-status');
+    let loaded = false;
+    const fail = () => { status.textContent = 'No se pudo cargar el modelo. Puedes consultar los planos debajo del visor.'; };
+    model.addEventListener('progress', event => {
+      if (!loaded) status.textContent = `Cargando modelo… ${Math.round(event.detail.totalProgress * 100)} %`;
+    });
+    model.addEventListener('load', () => { loaded = true; status.textContent = 'Arrastra para girar · rueda o pellizco para acercar.'; });
+    model.addEventListener('error', fail);
+    try {
+      const { ModelViewerElement } = await import('./assets/vendor/model-viewer.min.js');
+      ModelViewerElement.dracoDecoderLocation = new URL('./assets/vendor/draco/', location.href).href;
+      model.src = './assets/VIVIENDA.glb';
+    } catch { fail(); }
+    document.querySelector('#reset').addEventListener('click', () => {
+      model.cameraOrbit = '35deg 65deg 100%';
+      model.cameraTarget = 'auto auto auto';
+      model.fieldOfView = 'auto';
+    });
+    const expand = document.querySelector('#expand');
+    expand.hidden = !document.fullscreenEnabled;
+    expand.addEventListener('click', async () => {
+      try {
+        if (document.fullscreenElement) await document.exitFullscreen();
+        else await document.documentElement.requestFullscreen();
+      } catch { status.textContent = 'El navegador no permitió la pantalla completa. Puedes explorar el modelo aquí.'; }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      expand.textContent = document.fullscreenElement ? 'Salir de pantalla completa' : 'Pantalla completa';
+    });
   </script>
 </body>
 </html>

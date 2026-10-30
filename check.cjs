@@ -7,7 +7,24 @@ const html = fs.readFileSync(path.join(root,'index.html'),'utf8');
 const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 assert.equal(ids.length,new Set(ids).size,'Duplicate IDs');
 for (const [,href] of html.matchAll(/href="#([^"]+)"/g)) assert(ids.includes(href),`Missing anchor ${href}`);
-for (const [,url] of html.matchAll(/(?:src|href|poster)="((?:assets\/|(?:style|projects)\.css|(?:script|model)\.js)[^"]*)"/g)) assert(fs.existsSync(path.join(root,url.split(/[?#]/)[0])),`Missing file ${url}`);
+function checkFileCase(url) {
+ let folder=root;
+ for(const part of url.split(/[?#]/)[0].replace(/^\.\//,'').split('/')) {
+  assert(fs.readdirSync(folder).includes(part),`Missing file or incorrect letter case: ${url}`);
+  folder=path.join(folder,part);
+ }
+}
+for (const [,url] of html.matchAll(/(?:src|href|poster)="((?:assets\/|vivienda-3d\.html|(?:style|projects)\.css|(?:script|model)\.js)[^"]*)"/g)) checkFileCase(url);
+const housing=html.match(/<section[^>]*id="vivienda"[\s\S]*?<\/section>/)[0];
+assert(housing.indexOf('<iframe')>housing.indexOf('<div class="case-media">'),'Housing iframe must be in the right media column');
+assert.equal((housing.match(/<iframe/g)||[]).length,1);
+for(const name of ['vivienda-vigas','vivienda-columnas','vivienda-losas']) assert(housing.includes(`assets/${name}.pdf`));
+const housingPage=fs.readFileSync(path.join(root,'vivienda-3d.html'),'utf8');
+const housingAsset=housingPage.match(/model\.src\s*=\s*['"]([^'"]+)['"]/)[1];
+checkFileCase(housingAsset);
+const housingGLB=fs.readFileSync(path.join(root,housingAsset));
+assert.equal(housingGLB.subarray(0,4).toString(),'glTF');
+assert.equal(housingGLB.readUInt32LE(8),housingGLB.length);
 assert.equal((html.match(/<section class="chapter/g)||[]).length,14);
 assert.equal((html.match(/class="earned-skills"/g)||[]).length,6);
 assert(!html.includes('Consultar portafolio documental'));

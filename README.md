@@ -37,8 +37,6 @@ No se afirman porcentajes de mejora, precisión, carga máxima, premios ni ahorr
 
 ## Recursos que faltan para ampliar el contenido
 
-- Exportación de la vivienda multifamiliar para completar su visualización 3D; sus archivos RVT originales se conservan fuera del repositorio. El modelo de Rosa América ya está incorporado.
-- Planos de vigas, losas y columnas de la vivienda en un formato publicable.
 - Nueva fotografía para la sección de trayectoria, anunciada por Joseph y todavía no recibida.
 - Resultados y reportes experimentales que se autoricen publicar.
 - Repositorio, metodología y evaluación del algoritmo de monitoreo estructural.
@@ -49,7 +47,15 @@ No hay dependencias de servicios para los enlaces internos o los PDF. LinkedIn y
 
 Pasaron sintaxis, `node check.cjs` y solicitudes HTTP de los 22 recursos enlazados. Se comprobó el diseño en el navegador de escritorio y a 390 px: sin desbordamiento horizontal; menú móvil, ampliación de un plano, zoom al 300 %, cierre con Escape y restauración del foco. El video cargó y reprodujo correctamente (109,79 s, estado readyState 4); se comprobó reproducción/pausa con teclado, sin errores de consola. Utiliza carga diferida hasta la interacción.
 
-El sitio utiliza copias de visualización sin ejecutar código dentro de Revit ni modificar los archivos RVT originales. El modelo interactivo de Rosa América está disponible; el de la vivienda permanece pendiente.
+El sitio utiliza copias de visualización sin ejecutar código dentro de Revit ni modificar los archivos RVT originales. Los modelos interactivos de Rosa América y vivienda están disponibles.
+
+## Vivienda: modelo y documentación técnica
+
+El iframe de `vivienda-3d.html` es hijo de la columna `.case-media`, junto al texto del proyecto, y queda fuera de la lista de habilidades. En móvil se coloca después de la columna de texto. El visor utiliza exactamente `assets/VIVIENDA.glb`, respetando las mayúsculas del archivo aportado; los controles permiten restablecer la cámara y usar pantalla completa cuando el navegador lo admite. Incluye estados de carga y error.
+
+Debajo del modelo se presentan los tres documentos aportados: vigas del primer piso, columnas y losas. Cada lámina tiene una vista WebP ampliable y un enlace al PDF original. El enlace «Consultar planos» desplaza la columna hasta la documentación. Las láminas se identifican como documentación del equipo académico.
+
+La comprobación local verifica ubicación del iframe, presencia de los tres planos, integridad del GLB y correspondencia exacta de mayúsculas y minúsculas en los recursos. El contenido del modelo y los PDF originales se conserva sin modificaciones.
 
 ## Modelo interactivo de Rosa América
 
