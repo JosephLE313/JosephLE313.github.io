@@ -35,9 +35,9 @@ El video `nexo-bot-demo.mp4` procede de la demostración local aportada en el co
 
 No se afirman porcentajes de mejora, precisión, carga máxima, premios ni ahorros sin documentación. El octavo ciclo y las capacitaciones en curso reflejan el CV aportado, no una verificación administrativa posterior. BIM/VDC se muestra como área de profundización.
 
-## Recursos que faltan para ampliar el contenido
+La sección de trayectoria incorpora la fotografía de la visita técnica a IIRSA SUR en Cusco aportada por Joseph, una frase sobre constancia y sus valores personales.
 
-- Nueva fotografía para la sección de trayectoria, anunciada por Joseph y todavía no recibida.
+## Recursos que faltan para ampliar el contenido
 - Resultados y reportes experimentales que se autoricen publicar.
 - Repositorio, metodología y evaluación del algoritmo de monitoreo estructural.
 
