@@ -1,0 +1,30 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const path = require('node:path');
+const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+const visits = html.match(/<section class="chapter visits"[\s\S]*?<\/section>/)[0];
+assert.equal((visits.match(/class="visit-card"/g) || []).length, 6);
+assert.equal((visits.match(/class="visit-details"/g) || []).length, 6);
+assert(!visits.includes('puente-fideos') && !visits.includes('assets/visita-obra.webp'));
+for (const [,page] of visits.matchAll(/class="visit-page visit-grid"([^]*?)(?=<div class="visit-page|<\/section>|$)/g)) {
+  assert.equal((page.match(/class="visit-card"/g) || []).length, 3);
+}
+const details = [{open:true}, {open:true}];
+const pages = details.map(detail => ({hidden:false,querySelectorAll:()=>[detail]}));
+const buttons = [0,1].map(() => ({attrs:{},addEventListener(_,fn){this.click=fn;},setAttribute(k,v){this.attrs[k]=v;},removeAttribute(k){delete this.attrs[k];}}));
+const navigation = {hidden:true}, status = {};
+const section = {querySelectorAll:s=>s==='.visit-page'?pages:buttons,querySelector:s=>s==='#visits-status'?status:navigation};
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'visits.js'),'utf8'), {document:{querySelector:()=>section}});
+assert.deepEqual(pages.map(p=>p.hidden), [false,true]);
+assert.equal(navigation.hidden,false);
+buttons[1].click();
+assert.deepEqual(pages.map(p=>p.hidden), [true,false]);
+assert.equal(details[0].open,false);
+assert.equal(buttons[0].attrs['aria-current'],undefined);
+assert.equal(buttons[1].attrs['aria-current'],'page');
+assert.equal(status.textContent,'Visitas 4–6 de 6 · 2025');
+buttons[0].click();
+assert.deepEqual(pages.map(p=>p.hidden), [false,true]);
+assert.equal(status.textContent,'Visitas 1–3 de 6 · 2026');
+console.log('PASS: six disclosures, three visits per page, pagination, collapsed hidden details and accessible page state.');
