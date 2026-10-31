@@ -98,3 +98,26 @@ html{scroll-snap-type:none}
 #viewer-image{display:block;width:100%;max-width:none;height:auto}
 @media(min-width:1100px){.case-study .case-media{position:sticky;top:110px;max-height:calc(100svh - 145px);overflow:auto;scrollbar-width:thin;scrollbar-color:#56756c transparent;padding-right:7px}}
 @media(max-width:760px){.case-study{padding-top:88px;padding-bottom:70px}.case-layout{grid-template-columns:1fr;gap:35px}.case-copy h2{font-size:42px}.case-study .eyebrow{font-size:8px;letter-spacing:1.6px}.earned-skills{padding:23px}.earned-skills li{font-size:10px}.project-description{font-size:13px}.role-list li{font-size:12px}.visit-grid{grid-template-columns:1fr;gap:30px}.viewer-toolbar{padding:14px}.viewer-toolbar p{font-size:10px}.viewer-controls{padding:12px;gap:8px;flex-wrap:wrap}.viewer-controls input{max-width:100px}.viewer-controls a{font-size:10px}.media-pair .zoom-image img{height:190px}}
+
+/* Research progress and readable tool cards. */
+#monitoreo .research-layout{align-items:start;gap:clamp(35px,5vw,75px)}
+.research-media{display:grid;gap:24px;min-width:0}
+#monitoreo .lab-figure>.zoom-image{max-width:380px;margin-inline:auto;padding:12px;background:#f5f5f3}
+#monitoreo .lab-figure>.zoom-image img{aspect-ratio:456/677;object-fit:contain;max-height:460px}
+#monitoreo .lab-figure figcaption{text-align:center;line-height:1.7;margin-top:12px;font-size:11px;color:var(--muted)}
+#monitoreo .research-note{margin:0;background:#9ce2cc05}
+.research-facts{display:grid;gap:10px;margin:20px 0;letter-spacing:0;font-size:12px}
+.research-facts>div{display:flex;justify-content:space-between;gap:15px;border-top:1px solid var(--line);padding-top:10px}
+.research-facts dt{color:var(--muted)}
+.research-facts dd{margin:0;color:var(--text);text-align:right}
+#monitoreo .research-status{font:12px/1.8 var(--sans);color:var(--muted);letter-spacing:0;margin-bottom:0}
+.research-skills{border-top:1px solid #9ce2cc4d;padding-top:22px}
+.research-skills .eyebrow{margin-bottom:12px}
+.research-skills h3{font:400 28px/1.2 var(--serif);margin:0 0 12px}
+.research-skills>p:not(.eyebrow){font-size:13px;color:var(--muted)}
+.research-skills ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:9px;margin:18px 0 0}
+.research-skills li{padding:8px 11px;border:1px solid var(--line);font-size:12px;color:#d7e9e0}
+#tecnologias .skill-index{display:block;font-size:11px;line-height:1.8;letter-spacing:1px}
+#tecnologias .skills-grid strong{font-size:15px;line-height:1.6}
+#tecnologias .skills-grid li span{font-size:13px;line-height:1.7}
+@media(max-width:760px){#monitoreo .lab-figure>.zoom-image{max-width:340px}#tecnologias .skill-index{font-size:11px}#tecnologias .skills-grid strong{font-size:16px}#tecnologias .skills-grid li span{font-size:14px}.research-facts>div{flex-wrap:wrap}}
